@@ -1,14 +1,15 @@
-var num = 0;
+var num = "";
 function testerer() {
-    num += 1
+    num = document.getElementById("fname").value
+    console.log(num)
     document.getElementById("demo").innerHTML = num;
 }
 
 function save() {
-    localStorage.setItem("test", num.toString());
+    localStorage.setItem("test", num);
 }
 
 function load() {
-    num = parseInt(localStorage.getItem("test"));
+    num = localStorage.getItem("test");
     document.getElementById("demo").innerHTML = num;
 }
