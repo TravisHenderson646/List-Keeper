@@ -6,22 +6,27 @@
           float: left;
           padding: 10px;
         }
+        ul {
+        list-style-type: none; /* Remove bullets */
+        padding: 0; /* Remove padding */
+        margin: 10; /* Remove margins */
+        }
     </style>
 </head>
 <body>
     <h1>My First Heading</h1>
+    <button type="button" onclick="on_add_clicked()">&#8853; Add</button>
+    <input type="text" id="input_field" name="input_field">
+    <button type="button" onclick="on_save_clicked()">save &#60;3</button>
+    <button type="button" onclick="on_clear_clicked()">&#8855; clear all &#8855;</button><br>
+
     <div class="column">
-
-        <button type="button" onclick="on_add_clicked()">&#8853; Add</button>
-
-        <input type="text" id="input_field" name="input_field"><br><br>
-
-        <button type="button" onclick="on_save_clicked()">save list &#60;3</button><br><br><br><br>
-        <button type="button" onclick="on_clear_clicked()">&#8855; clear all &#8855;</button>
+        <p>List of lists</p>
+        <ul id="superlist_view"></ul>
     </div>
-
     <div class="column">
-        <p id="list_view">My first paragraph.</p>
+        <p>Listy list</p>
+        <ul id="list_view"></ul>
     </div>
 </body>
 <script src="main.js"></script>
