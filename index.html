@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+        .column {
+          float: left;
+          padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>My First Heading</h1>
+    <div class="column">
 
-    <p id="list_view">My first paragraph.</p>
+        <button type="button" onclick="on_add_clicked()">&#8853; Add</button>
 
-    <button type="button" onclick="clicked_add()">add??</button>
-    <input type="text" id="input_field" name="input_field"><br><br>
-    <button type="button" onclick="save()">save??</button>
+        <input type="text" id="input_field" name="input_field"><br><br>
 
-    <script src="main.js"></script>
+        <button type="button" onclick="on_save_clicked()">save list &#60;3</button><br><br><br><br>
+        <button type="button" onclick="on_clear_clicked()">&#8855; clear all &#8855;</button>
+    </div>
 
+    <div class="column">
+        <p id="list_view">My first paragraph.</p>
+    </div>
 </body>
+<script src="main.js"></script>
 </html>

@@ -1,0 +1,5 @@
+Features:
+    import/export lists
+
+QoL:
+    have input_field grab focus after user clicks add
