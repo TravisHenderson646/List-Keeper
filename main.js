@@ -1,63 +1,49 @@
-
-const map1 = new Map();
-const map2 = new Map();
-const map3 = new Map();
-const map4 = new Map();
-map1.set('a', map2)
-map1.set('b', map3)
-map1.set('c', map4)
-map2.set('set of words', 'word')
-map2.set('begal', 'nonstence')
-map2.set('asdf', 'asdf')
-map3.set('a', 'tester')
-map4.set('a', 'aaaa')
-
-// for (let key of map2.keys()) {
-//     const paragraph = document.createElement('p')
-//     const node = document.createTextNode(key)
-//     paragraph.appendChild(node)
-//     document.getElementById("demo").appendChild(paragraph)
-// }
-
-
-
-var list = new Map();
 var list_view = document.getElementById("list_view");
 var input_field = document.getElementById("input_field");
+var list = JSON.parse(localStorage.getItem('save'), reviver);
+if (!list){
+    list = new Map();
+} else {
+    refresh_list()
+}
 input_field.addEventListener('keydown', function (e){
     if (e.key === 'Enter') {
-        clicked_add()
+        on_add_clicked();
     }
 })
 
-function clicked_add() {
-    let item = input_field.value
-    if (!list.has(item)){
-        list.set(item, new Map())
-        input_field.value = ''
-        list_view.innerHTML = '';
-        for (let key of list.keys()) {
-            const paragraph = document.createElement('p')
-            const node = document.createTextNode(key)
-            paragraph.appendChild(node)
-            list_view.appendChild(paragraph)
-        }
+
+function refresh_list() {
+    list_view.innerHTML = '';
+    for (let key of list.keys()) {
+        const paragraph = document.createElement('p');
+        const node = document.createTextNode(key);
+        paragraph.style.marginTop = '0px';
+        paragraph.style.marginBottom = '0px';
+        paragraph.appendChild(node);
+        list_view.appendChild(paragraph);
     }
 }
 
+function on_add_clicked() {
+    let item = input_field.value;
+    if (!list.has(item)){
+        list.set(item, new Map());
+        input_field.value = '';
+        refresh_list();
+    }
+}
+function on_save_clicked() {
+    localStorage.setItem("save", JSON.stringify(list, replacer));
+}
+function on_clear_clicked() {
+    list.clear()
+    refresh_list()
+}
 
 
-
-
-// function save() {
-//     num = document.getElementById("user_input").value
-//     localStorage.setItem("test", num);
-// }
-// function load() {
-//     num = localStorage.getItem("test");
-//     document.getElementById("demo").innerHTML = num;
-// }
 function replacer(key, value) {
+    // Use with reviver to stringify maps
     if(value instanceof Map) {
     return {
         dataType: 'Map',
@@ -68,6 +54,7 @@ function replacer(key, value) {
     }
 }
 function reviver(key, value) {
+    // Use with replacer to stringify maps
     if(typeof value === 'object' && value !== null) {
         if (value.dataType === 'Map') {
         return new Map(value.value);
@@ -85,4 +72,3 @@ function reviver(key, value) {
 //   ];
 // const str = JSON.stringify(originalValue, replacer);
 // const newValue = JSON.parse(str, reviver);
-// console.log(originalValue, newValue);
