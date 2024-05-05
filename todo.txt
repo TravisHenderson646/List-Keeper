@@ -1,3 +1,5 @@
+have only one column and put whatever list (or list path) you're in at the top
+
 Features:
     - import/export lists
 
