@@ -66,6 +66,9 @@ function on_save_clicked() {
     localStorage.setItem("save", JSON.stringify(superlist, replacer));
 }
 function on_clear_clicked() {
+    current_list.clear()
+    refresh_list()
+    current_list = null
     superlist.clear()
     refresh_list()
 }
