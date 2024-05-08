@@ -2,10 +2,6 @@
 <html>
 <head>
     <style>
-        .column {
-          float: left;
-          padding: 10px;
-        }
         ul {
         list-style-type: none; /* Remove bullets */
         padding: 0; /* Remove padding */
@@ -14,20 +10,15 @@
     </style>
 </head>
 <body>
-    <h1>My First Heading</h1>
-    <button type="button" onclick="on_add_clicked()">&#8853; Add</button>
-    <input type="text" id="input_field" name="input_field">
-    <button type="button" onclick="on_save_clicked()">save &#60;3</button>
-    <button type="button" onclick="on_clear_clicked()">&#8855; clear all &#8855;</button><br>
+    <ul id='path_view'></ul>
 
-    <div class="column">
-        <p>List of lists</p>
-        <ul id="superlist_view"></ul>
-    </div>
-    <div class="column">
-        <p>Listy list</p>
-        <ul id="list_view"></ul>
-    </div>
+    <button type='button' onclick='on_back_pressed()'>&#8592; Back</button>
+    <button type='button' onclick='on_add_pressed()'>&#8853; Add</button>
+    <input type='text' id='input_field' name='input_field'>
+    <button type='button' onclick='on_save_pressed()'>save &#60;3</button>
+    <button type='button' onclick='on_delete_list_pressed()'>&#8855; delete list &#8855;</button><br>
+
+    <ul id='list_view'></ul>
 </body>
-<script src="main.js"></script>
+<script src='main.js'></script>
 </html>

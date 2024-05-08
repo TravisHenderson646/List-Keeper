@@ -1,9 +1,0 @@
-have only one column and put whatever list (or list path) you're in at the top
-
-Features:
-    - import/export lists
-
-QoL:
-    - have input_field grab focus after user clicks add
-    - drag and drop to resort items
-        https://codepen.io/crouchingtigerhiddenadam/pen/qKXgap

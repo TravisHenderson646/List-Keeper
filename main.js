@@ -1,77 +1,107 @@
-var superlist_view = document.getElementById("superlist_view");
-var list_view = document.getElementById("list_view");
-var input_field = document.getElementById("input_field");
-var superlist = JSON.parse(localStorage.getItem('save'), reviver);
-var current_list = null
-if (!superlist){
-    superlist = new Map();
+
+class List {
+    constructor(name){
+        this.name = name;
+        this.list = [];
+        this.properties = new Map();
+        this.global_properties = [];
+    }
+}
+
+var path = [];
+var lists = JSON.parse(localStorage.getItem('save'), reviver);
+var path_view = document.getElementById('path_view');
+var list_view = document.getElementById('list_view');
+var input_field = document.getElementById('input_field');
+if ((!Array.isArray(lists)) || (Array.isArray(lists) ? !typeof lists[0] === 'object' : false)){
+    lists = [];
 } else {
     refresh_list()
 }
+
+
 input_field.addEventListener('keydown', function (e){
     if (e.key === 'Enter') {
-        on_add_clicked();
+        on_add_pressed();
     }
 })
 
 function refresh_list() {
-    if (current_list) {
-        list_view.innerHTML = '';
-        for (let key of current_list.keys()) {
-            const item = document.createElement('li');
-            const node = document.createTextNode(key);
-            item.style.margin = '0px';
-            item.style.padding = '5px'
-            item.appendChild(node);
-            list_view.appendChild(item);
-        }
-    } else {
-        superlist_view.innerHTML = '';
-        for (let key of superlist.keys()) {
-            const item = document.createElement('li');
-            const node = document.createTextNode(key);
-            item.style.margin = '0px';
-            item.style.padding = '5px'
-            item.addEventListener('click', function() {on_item_clicked(item)})
-            item.appendChild(node);
-            superlist_view.appendChild(item);
-        }
+    path_view.innerHTML = '';
+    for (let item of get_path_name()) {
+        const element = document.createElement('li');
+        const node = document.createTextNode(item);
+        element.style.margin = '0px';
+        element.style.padding = '5px'
+        element.appendChild(node);
+        path_view.appendChild(element);
+    }
+    list_view.innerHTML = '';
+    for (let [index, name] of get_list_items().entries()) {
+        const element = document.createElement('li');
+        const node = document.createTextNode(name);
+        element.style.margin = '0px';
+        element.style.padding = '5px'
+        element.addEventListener('click', function() {on_item_tapped(index)});
+        element.appendChild(node);
+        list_view.appendChild(element);
     }
 }
 
-function on_item_clicked(item) {
-    console.log(item.textContent)
-    current_list = superlist.get(item.textContent)
-    console.log(current_list)
-    refresh_list()
+function get_path_name() {
+    let path_name = [];
+    for (let [i, index] of path.entries()) {
+        let slice = path.slice(0, i);
+        let list = lists;
+        for (let j of slice) {
+            list = list[j].list;
+        }
+        path_name.push(list[index].name)
+    }
+    return path_name
+}
+function get_list_items() {
+    let items = []
+    for (let item of get_list(path)) {
+        items.push(item.name);
+    }
+    return items;
+}
+function get_list(path) {
+    let list = lists;
+    for (let index of path) {
+        list = list[index].list;
+    }
+    return list;
 }
 
-function on_add_clicked() {
-    let item = input_field.value;
-    if (current_list){
-        if (!current_list.has(item)){
-            current_list.set(item, new Map());
-            input_field.value = '';
-            refresh_list();
-        }
-    } else {
-        if (!superlist.has(item)){
-            superlist.set(item, new Map());
-            input_field.value = '';
-            refresh_list();
-        }
+function on_item_tapped(index) {
+    path.push(index);
+    refresh_list();
+}
+function on_back_pressed() {
+    path.pop();
+    refresh_list();
+}
+function on_add_pressed() {
+    let item = new List(input_field.value);
+    if (!get_list_items().includes(item.name)){
+        get_list(path).push(item);
+        input_field.value = '';
+        refresh_list();
     }
+    input_field.focus();
 }
-function on_save_clicked() {
-    localStorage.setItem("save", JSON.stringify(superlist, replacer));
+function on_save_pressed() {
+    localStorage.setItem('save', JSON.stringify(lists, replacer));
 }
-function on_clear_clicked() {
-    current_list.clear()
-    refresh_list()
-    current_list = null
-    superlist.clear()
-    refresh_list()
+function on_delete_list_pressed() {
+    let parent = get_list(path.slice(0, -1));
+    parent.splice(path.pop(), 1);
+    refresh_list();
 }
+
+
 
 
 function replacer(key, value) {
