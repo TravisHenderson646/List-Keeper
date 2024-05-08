@@ -1,9 +1,18 @@
+class List {
+    constructor(name){
+        this.name = name;
+        this.list = [];
+        this.properties = new Map();
+        this.global_properties = [];
+    }
+}
 
 var path = [];
 var lists = JSON.parse(localStorage.getItem('save'), reviver);
-
+var path_view = document.getElementById('path_view');
 var list_view = document.getElementById('list_view');
 var input_field = document.getElementById('input_field');
+
 if (!lists){
     lists = new Map();
 } else {
@@ -16,15 +25,24 @@ input_field.addEventListener('keydown', function (e){
 })
 
 function refresh_list() {
+    path_view.innerHTML = '';
+    for (let item of path) {
+        const element = document.createElement('li');
+        const node = document.createTextNode(item);
+        element.style.margin = '0px';
+        element.style.padding = '5px'
+        element.appendChild(node);
+        path_view.appendChild(element);
+    }
     list_view.innerHTML = '';
     for (let key of get_list().keys()) {
-        const item = document.createElement('li');
+        const element = document.createElement('li');
         const node = document.createTextNode(key);
-        item.style.margin = '0px';
-        item.style.padding = '5px'
-        item.addEventListener('click', function() {on_item_clicked(item)})
-        item.appendChild(node);
-        list_view.appendChild(item);
+        element.style.margin = '0px';
+        element.style.padding = '5px'
+        element.addEventListener('click', function() {on_item_clicked(element)})
+        element.appendChild(node);
+        list_view.appendChild(element);
     }
 }
 
@@ -35,7 +53,6 @@ function get_list() {
     }
     return _list
 }
-
 
 function on_item_clicked(item) {
     path.push(item.textContent)
@@ -53,12 +70,18 @@ function on_add_clicked() {
         input_field.value = '';
         refresh_list();
     }
+    input_field.focus()
 }
 function on_save_clicked() {
     localStorage.setItem('save', JSON.stringify(lists, replacer));
 }
-function on_clear_clicked() {
-    lists.clear()
+function on_delete_list_clicked() {
+    let parent = lists
+    for (let branch of path.slice(0, -1)) {
+        parent = parent.get(branch)
+    }
+    parent.delete(path.at(-1))
+    path = path.slice(0, -1)
     refresh_list()
 }
 
