@@ -10,3 +10,4 @@ QoL:
     - [ ] drag and drop to resort items
         https://codepen.io/crouchingtigerhiddenadam/pen/qKXgap
     - [x] have input_field grab focus after user clicks add
+    - [ ] markdown parsing for list items
