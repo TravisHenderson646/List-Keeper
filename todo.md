@@ -11,3 +11,4 @@ QoL:
         https://codepen.io/crouchingtigerhiddenadam/pen/qKXgap
     - [x] have input_field grab focus after user clicks add
     - [ ] markdown parsing for list items
+    - [ ] option to show all sublists in a tree form
