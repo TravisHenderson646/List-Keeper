@@ -2,14 +2,12 @@ const VERSION = '0.0.0';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
-const GITHUB_PATH = '/List-Keeper';
-
 var STATIC_RESOURCES = [
-  `${GITHUB_PATH}/`,
-  `${GITHUB_PATH}/index.html`,
-  `${GITHUB_PATH}/main.js`,
-  `${GITHUB_PATH}/icon.png`
-]
+  '/',
+  '/index.html',
+  '/main.js',
+  '/icon.png'
+];
 
 // On install, cache the static resources
 self.addEventListener("install", (event) => {
