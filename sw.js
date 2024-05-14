@@ -6,7 +6,6 @@ var STATIC_RESOURCES = [
   '/',
   '/index.html',
   '/main.js',
-  '/sw.js',
   '/icon.png'
 ];
 
@@ -16,6 +15,7 @@ self.addEventListener("install", (event) => {
         (async () => {
             const cache = await caches.open(CACHE_NAME);
             cache.addAll(STATIC_RESOURCES);
+            console.log('eventlistener install event !!!!>!D')
         })(),
     );
 });
@@ -32,6 +32,7 @@ self.addEventListener("activate", (event) => {
                     }
                 }),
             );
+            console.log('eventlistener ACTIVATE event !!!!>!D')
             await clients.claim();
         })(),
     );
