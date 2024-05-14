@@ -1,4 +1,5 @@
 Next:
+    - save on every addition, remove save button
     - {List, item, property}
         - differentiate between lists and items automatically
         - user clicks a button that says "add property" to add a property
@@ -10,3 +11,5 @@ QoL:
     - [ ] drag and drop to resort items
         https://codepen.io/crouchingtigerhiddenadam/pen/qKXgap
     - [x] have input_field grab focus after user clicks add
+    - [ ] markdown parsing for list items
+    - [ ] option to show all sublists in a tree form

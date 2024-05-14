@@ -1,0 +1,21 @@
+{
+    "name": "List Keeper",
+    "short_name": "LK",
+    "description": "Helps with list keeping",
+
+    "scope": "/List-Keeper/",
+    "start_url": "/List-Keeper/",
+
+    "background_color": "#000000",
+    "theme_color": "#226699",
+
+    "display": "standalone",
+
+    "icons": [
+        {
+          "src": "/List-Keeper/icon.png",
+          "type": "image/png",
+          "sizes": "48x48"
+        }
+    ]
+}
