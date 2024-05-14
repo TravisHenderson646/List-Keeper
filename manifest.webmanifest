@@ -9,13 +9,13 @@
     "background_color": "#000000",
     "theme_color": "#226699",
 
-    "display": "standalone",
+    "display": "browser",
 
     "icons": [
         {
-          "src": "/List-Keeper/icon.png",
-          "type": "image/png",
-          "sizes": "48x48"
+            "src":"icon.png",
+            "sizes":"144x144",
+            "type":"image/png"
         }
     ]
 }
