@@ -6,6 +6,7 @@ var STATIC_RESOURCES = [
   '/',
   '/index.html',
   '/main.js',
+  '/sw.js',
   '/icon.png'
 ];
 
