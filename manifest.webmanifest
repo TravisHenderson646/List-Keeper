@@ -9,7 +9,7 @@
     "background_color": "#000000",
     "theme_color": "#226699",
 
-    "display": "browser",
+    "display": "minimal-ui",
 
     "icons": [
         {
