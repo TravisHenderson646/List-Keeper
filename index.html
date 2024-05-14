@@ -8,6 +8,12 @@
         margin: 10; /* Remove margins */
         }
     </style>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>List Keeper</title>
+    <link rel="canonical" href="https://TravisHenderson646.github.io/List-Keeper/" />
+    <link rel="manifest" href="/List-Keeper/manifest.webmanifest" type="application/manifest+json" />
 </head>
 <body>
     <ul id='path_view'></ul>
@@ -19,6 +25,13 @@
     <button type='button' onclick='on_delete_list_pressed()'>&#8855; delete list &#8855;</button><br>
 
     <ul id='list_view'></ul>
+
+
+    <script src='main.js'></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
 </body>
-<script src='main.js'></script>
 </html>
