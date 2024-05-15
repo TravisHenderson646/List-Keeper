@@ -10,15 +10,30 @@ var STATIC_RESOURCES = [
 ];
 console.log('sw.js test random 112233')
 // On install, cache the static resources
-self.addEventListener("install", (event) => {
+
+// self.addEventListener("install", (event) => {
+//     event.waitUntil(
+//         caches.open(CACHE_NAME).then((cache) => {
+//             return cache.addAll(STATIC_RESOURCES);
+//         }).then(() => {
+//             console.log('Cached assets during install');
+//         })
+//     );
+// });
+self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(STATIC_RESOURCES);
-        }).then(() => {
-            console.log('Cached assets during install');
+            const cachePromises = STATIC_RESOURCES.map(urlToCache => {
+                return cache.add(urlToCache).catch(err => {
+                    console.error(`Caching failed for ${urlToCache}: ${err}`);
+                    throw err; // Rethrow to ensure the promise chain rejects
+                });
+            });
+            return Promise.all(cachePromises);
         })
     );
 });
+
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
     console.log('eventlistener ACTIVATE event !!!!>!D')
