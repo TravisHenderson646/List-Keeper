@@ -3,10 +3,10 @@ const VERSION = 'v0.0.1';
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
 var STATIC_RESOURCES = [
-  '/',
-  '/index.html',
-  '/main.js',
-  '/icon.png'
+  '/List-Keeper/',
+  '/List-Keeper/index.html',
+  '/List-Keeper/main.js',
+  '/List-Keeper/icon.png'
 ];
 console.log('sw.js test random 112233')
 // On install, cache the static resources
