@@ -21,6 +21,7 @@ console.log('sw.js test random 112233')
 //     );
 // });
 self.addEventListener('install', (event) => {
+    console.log('eventlistener INSTALLLLL event ', event)
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             const cachePromises = STATIC_RESOURCES.map(urlToCache => {
@@ -36,7 +37,7 @@ self.addEventListener('install', (event) => {
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
-    console.log('eventlistener ACTIVATE event !!!!>!D')
+    console.log('eventlistener ACTIVATE event !!!!>!D', event)
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
@@ -54,7 +55,7 @@ self.addEventListener("activate", (event) => {
 
 // On fetch, intercept server requests and respond with cached responses instead of going to network
 self.addEventListener("fetch", (event) => {
-    console.log('eventlistener FETCHHHHH event 123465421')
+    console.log('eventlistener FETCHHHHH event 123465421', event)
     if (event.request.mode === "navigate") {
         event.respondWith(caches.match("/List-Keeper/"));
         return;
