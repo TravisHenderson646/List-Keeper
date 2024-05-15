@@ -53,19 +53,20 @@ self.addEventListener("activate", (event) => {
 });
 
 // On fetch, intercept server requests and respond with cached responses instead of going to network
-// self.addEventListener("fetch", (event) => {
-//     if (event.request.mode === "navigate") {
-//         event.respondWith(caches.match("/"));
-//         return;
-//     }
-//     event.respondWith(
-//         (async () => {
-//             const cache = await caches.open(CACHE_NAME);
-//             const cachedResponse = await cache.match(event.request.url);
-//             if (cachedResponse) {
-//                 return cachedResponse;
-//             }
-//             return new Response(null, { status: 404 });
-//         })(),
-//     );
-// });
+self.addEventListener("fetch", (event) => {
+    console.log('eventlistener FETCHHHHH event 123465421')
+    if (event.request.mode === "navigate") {
+        event.respondWith(caches.match("/List-Keeper/"));
+        return;
+    }
+    event.respondWith(
+        (async () => {
+            const cache = await caches.open(CACHE_NAME);
+            const cachedResponse = await cache.match(event.request.url);
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return new Response(null, { status: 404 });
+        })(),
+    );
+});
