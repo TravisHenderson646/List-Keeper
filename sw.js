@@ -8,20 +8,21 @@ var STATIC_RESOURCES = [
   '/main.js',
   '/icon.png'
 ];
-
+console.log('sw.js test random 112233')
 // On install, cache the static resources
 self.addEventListener("install", (event) => {
+    console.log('eventlistener install event !!!!>!D')
     event.waitUntil(
         (async () => {
             const cache = await caches.open(CACHE_NAME);
             cache.addAll(STATIC_RESOURCES);
-            console.log('eventlistener install event !!!!>!D')
         })(),
     );
 });
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
+    console.log('eventlistener ACTIVATE event !!!!>!D')
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
@@ -32,7 +33,6 @@ self.addEventListener("activate", (event) => {
                     }
                 }),
             );
-            console.log('eventlistener ACTIVATE event !!!!>!D')
             await clients.claim();
         })(),
     );
