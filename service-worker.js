@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.7';
+const VERSION = 'v0.0.8';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -11,30 +11,41 @@ var STATIC_RESOURCES = [
 ];
 
 // On install, cache the static resources
-self.addEventListener("install", (event) => {
+self.addEventListener('install', (event) => {
     console.log('eventlistener activate fired event', event.request)
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(STATIC_RESOURCES);
-        }).then(() => {
-            console.log('Cached assets during install');
-        })
+            return cache.addAll(urlsToCache);
+        }).then(() => self.skipWaiting()) // This line ensures the service worker activates immediately
     );
 });
 
+// self.addEventListener("install", (event) => {
+//     console.log('eventlistener activate fired event', event.request)
+//     event.waitUntil(
+//         caches.open(CACHE_NAME).then((cache) => {
+//             return cache.addAll(STATIC_RESOURCES);
+//         }).then(() => {
+//             console.log('Cached assets during install');
+//         })
+//     );
+// });
+
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
-    console.log('eventlistener activate fired event', event.request)
+    console.log('eventlistener activate: fired event', event.request)
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
             await Promise.all(
                 names.map((name) => {
                     if (name !== CACHE_NAME) {
+                        console.log(`activate: Deleting old cache: ${name}`);
                         return caches.delete(name);
                     }
                 }),
             );
+            console.log('activate: Claiming clients');
             await clients.claim();
         })(),
     );
