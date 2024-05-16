@@ -89,6 +89,7 @@ function on_add_pressed() {
         get_list(path).push(item);
         input_field.value = '';
         refresh_list();
+        on_save_pressed()
     }
     input_field.focus();
 }
