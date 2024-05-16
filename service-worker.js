@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.3';
+const VERSION = 'v0.0.4';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -9,9 +9,8 @@ var STATIC_RESOURCES = [
   '/List-Keeper/icons/icon.png',
   '/List-Keeper/manifest.json'
 ];
-console.log('service-worker.js test random 112233')
-// On install, cache the static resources
 
+// On install, cache the static resources
 self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
@@ -21,20 +20,6 @@ self.addEventListener("install", (event) => {
         })
     );
 });
-// self.addEventListener('install', (event) => {
-//     console.log('eventlistener INSTALLLLL event ', event)
-//     event.waitUntil(
-//         caches.open(CACHE_NAME).then((cache) => {
-//             const cachePromises = STATIC_RESOURCES.map(urlToCache => {
-//                 return cache.add(urlToCache).catch(err => {
-//                     console.error(`Caching failed for ${urlToCache}: ${err}`);
-//                     throw err; // Rethrow to ensure the promise chain rejects
-//                 });
-//             });
-//             return Promise.all(cachePromises);
-//         })
-//     );
-// });
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
@@ -56,7 +41,7 @@ self.addEventListener("activate", (event) => {
 
 // On fetch, intercept server requests and respond with cached responses instead of going to network
 self.addEventListener("fetch", (event) => {
-    console.log('eventlistener FETCHHHHH event 123465421', event)
+    console.log('eventlistener fetch event', event)
     if (event.request.mode === "navigate") {
         event.respondWith(caches.match("/List-Keeper/"));
         return;

@@ -1,12 +1,12 @@
 {
     "name": "List Keeper",
-    "short_name": "LK",
+    "short_name": "List Keeper",
     "description": "Helps with list keeping",
 
     "scope": "/List-Keeper/",
     "start_url": "/List-Keeper/",
 
-    "background_color": "#000000",
+    "background_color": "#123456",
     "theme_color": "#226699",
 
     "display": "minimal-ui",
