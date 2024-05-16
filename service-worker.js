@@ -40,7 +40,7 @@ self.addEventListener("activate", (event) => {
     );
 });
 
-// On fetch, intercept server requests and attempt network response before going to cache
+// On fetch, try network and cache it, if not try cache
 self.addEventListener('fetch', (event) => {
     console.log('eventlistener fetch fired event', event.request)
     event.respondWith((async () => {
