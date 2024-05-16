@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.5';
+const VERSION = 'v0.0.6';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -12,6 +12,7 @@ var STATIC_RESOURCES = [
 
 // On install, cache the static resources
 self.addEventListener("install", (event) => {
+    console.log('eventlistener activate fired event', event.request.url)
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(STATIC_RESOURCES);
@@ -23,7 +24,7 @@ self.addEventListener("install", (event) => {
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
-    console.log('eventlistener ACTIVATE event !!!!>!D', event)
+    console.log('eventlistener activate fired event', event.request.url)
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
@@ -39,30 +40,49 @@ self.addEventListener("activate", (event) => {
     );
 });
 
-// On fetch, intercept server requests and try to respond with cache before going to network
+// On fetch, intercept server requests and attempt network response before going to cache
 self.addEventListener('fetch', (event) => {
     console.log('Fetch event for ', event.request.url);
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            if (response) {
-                console.log('Found ', event.request.url, ' in cache');
-                return response;
-            }
-            console.log('Network request for ', event.request.url);
-            return fetch(event.request).then((networkResponse) => {
-                // Update the cache with the network response
+        fetch(event.request)
+            .then((networkResponse) => {
+                // Update the cache with the fresh response
                 return caches.open(CACHE_NAME).then((cache) => {
                     cache.put(event.request, networkResponse.clone());
                     return networkResponse;
                 });
-            });
-        }).catch((error) => {
-            // Handle exceptions that occur from match() or fetch()
-            console.error('Fetching failed:', error);
-            throw error;
-        })
+            })
+            .catch(() => {
+                // When the network is unavailable, try to serve from the cache
+                return caches.match(event.request);
+            })
     );
 });
+
+
+// self.addEventListener('fetch', (event) => {
+//     console.log('Fetch event for ', event.request.url);
+//     event.respondWith(
+//         caches.match(event.request).then((response) => {
+//             if (response) {
+//                 console.log('Found ', event.request.url, ' in cache');
+//                 return response;
+//             }
+//             console.log('Network request for ', event.request.url);
+//             return fetch(event.request).then((networkResponse) => {
+//                 // Update the cache with the network response
+//                 return caches.open(CACHE_NAME).then((cache) => {
+//                     cache.put(event.request, networkResponse.clone());
+//                     return networkResponse;
+//                 });
+//             });
+//         }).catch((error) => {
+//             // Handle exceptions that occur from match() or fetch()
+//             console.error('Fetching failed:', error);
+//             throw error;
+//         })
+//     );
+// });
 
 
 
