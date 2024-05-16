@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.4';
+const VERSION = 'v0.0.5';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -39,21 +39,47 @@ self.addEventListener("activate", (event) => {
     );
 });
 
-// On fetch, intercept server requests and respond with cached responses instead of going to network
-self.addEventListener("fetch", (event) => {
-    console.log('eventlistener fetch event', event)
-    if (event.request.mode === "navigate") {
-        event.respondWith(caches.match("/List-Keeper/"));
-        return;
-    }
+// On fetch, intercept server requests and try to respond with cache before going to network
+self.addEventListener('fetch', (event) => {
+    console.log('Fetch event for ', event.request.url);
     event.respondWith(
-        (async () => {
-            const cache = await caches.open(CACHE_NAME);
-            const cachedResponse = await cache.match(event.request.url);
-            if (cachedResponse) {
-                return cachedResponse;
+        caches.match(event.request).then((response) => {
+            if (response) {
+                console.log('Found ', event.request.url, ' in cache');
+                return response;
             }
-            return new Response(null, { status: 404 });
-        })(),
+            console.log('Network request for ', event.request.url);
+            return fetch(event.request).then((networkResponse) => {
+                // Update the cache with the network response
+                return caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, networkResponse.clone());
+                    return networkResponse;
+                });
+            });
+        }).catch((error) => {
+            // Handle exceptions that occur from match() or fetch()
+            console.error('Fetching failed:', error);
+            throw error;
+        })
     );
 });
+
+
+
+// self.addEventListener("fetch", (event) => {
+//     console.log('eventlistener fetch event', event)
+//     if (event.request.mode === "navigate") {
+//         event.respondWith(caches.match("/List-Keeper/"));
+//         return;
+//     }
+//     event.respondWith(
+//         (async () => {
+//             const cache = await caches.open(CACHE_NAME);
+//             const cachedResponse = await cache.match(event.request.url);
+//             if (cachedResponse) {
+//                 return cachedResponse;
+//             }
+//             return new Response(null, { status: 404 });
+//         })(),
+//     );
+// });
