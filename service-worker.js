@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.2';
+const VERSION = 'v0.0.3';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -6,34 +6,35 @@ var STATIC_RESOURCES = [
   '/List-Keeper/',
   '/List-Keeper/index.html',
   '/List-Keeper/main.js',
-  '/List-Keeper/icon.png'
+  '/List-Keeper/icons/icon.png',
+  '/List-Keeper/manifest.json'
 ];
-console.log('sw.js test random 112233')
+console.log('service-worker.js test random 112233')
 // On install, cache the static resources
 
-// self.addEventListener("install", (event) => {
-//     event.waitUntil(
-//         caches.open(CACHE_NAME).then((cache) => {
-//             return cache.addAll(STATIC_RESOURCES);
-//         }).then(() => {
-//             console.log('Cached assets during install');
-//         })
-//     );
-// });
-self.addEventListener('install', (event) => {
-    console.log('eventlistener INSTALLLLL event ', event)
+self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            const cachePromises = STATIC_RESOURCES.map(urlToCache => {
-                return cache.add(urlToCache).catch(err => {
-                    console.error(`Caching failed for ${urlToCache}: ${err}`);
-                    throw err; // Rethrow to ensure the promise chain rejects
-                });
-            });
-            return Promise.all(cachePromises);
+            return cache.addAll(STATIC_RESOURCES);
+        }).then(() => {
+            console.log('Cached assets during install');
         })
     );
 });
+// self.addEventListener('install', (event) => {
+//     console.log('eventlistener INSTALLLLL event ', event)
+//     event.waitUntil(
+//         caches.open(CACHE_NAME).then((cache) => {
+//             const cachePromises = STATIC_RESOURCES.map(urlToCache => {
+//                 return cache.add(urlToCache).catch(err => {
+//                     console.error(`Caching failed for ${urlToCache}: ${err}`);
+//                     throw err; // Rethrow to ensure the promise chain rejects
+//                 });
+//             });
+//             return Promise.all(cachePromises);
+//         })
+//     );
+// });
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
