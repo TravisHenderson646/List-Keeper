@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.6';
+const VERSION = 'v0.0.7';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -12,7 +12,7 @@ var STATIC_RESOURCES = [
 
 // On install, cache the static resources
 self.addEventListener("install", (event) => {
-    console.log('eventlistener activate fired event', event.request.url)
+    console.log('eventlistener activate fired event', event.request)
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(STATIC_RESOURCES);
@@ -24,7 +24,7 @@ self.addEventListener("install", (event) => {
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
-    console.log('eventlistener activate fired event', event.request.url)
+    console.log('eventlistener activate fired event', event.request)
     event.waitUntil(
         (async () => {
             const names = await caches.keys();
@@ -42,22 +42,49 @@ self.addEventListener("activate", (event) => {
 
 // On fetch, intercept server requests and attempt network response before going to cache
 self.addEventListener('fetch', (event) => {
-    console.log('Fetch event for ', event.request.url);
-    event.respondWith(
-        fetch(event.request)
-            .then((networkResponse) => {
-                // Update the cache with the fresh response
-                return caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, networkResponse.clone());
-                    return networkResponse;
-                });
-            })
-            .catch(() => {
-                // When the network is unavailable, try to serve from the cache
-                return caches.match(event.request);
-            })
-    );
+    console.log('eventlistener fetch fired event', event.request)
+    event.respondWith((async () => {
+        try {
+            // Try to get the response from the network
+            const networkResponse = await fetch(event.request);
+            // Open the cache and put a copy of the response in it
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(event.request, networkResponse.clone());
+            // Return the network response
+            return networkResponse;
+        } catch (error) {
+            // If the network request fails, try to serve the resource from the cache
+            const cachedResponse = await caches.match(event.request);
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            // If the resource is not in the cache, return a fallback response
+            return new Response('Resource not found', {
+                status: 404,
+                statusText: 'Not Found'
+            });
+        }
+    })());
 });
+
+
+// self.addEventListener('fetch', (event) => {
+//     console.log('Fetch event for ', event.request.url);
+//     event.respondWith(
+//         fetch(event.request)
+//             .then((networkResponse) => {
+//                 // Update the cache with the fresh response
+//                 return caches.open(CACHE_NAME).then((cache) => {
+//                     cache.put(event.request, networkResponse.clone());
+//                     return networkResponse;
+//                 });
+//             })
+//             .catch(() => {
+//                 // When the network is unavailable, try to serve from the cache
+//                 return caches.match(event.request);
+//             })
+//     );
+// });
 
 
 // self.addEventListener('fetch', (event) => {
