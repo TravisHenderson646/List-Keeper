@@ -1,5 +1,5 @@
 Next:
-    - save on every addition, remove save button
+    - make export import capability
     - {List, item, property}
         - differentiate between lists and items automatically
         - user clicks a button that says "add property" to add a property
