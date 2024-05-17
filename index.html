@@ -18,23 +18,23 @@
 
 </head>
 <body>
-    <p>&spades;&clubs;&diams;&hearts;&lt;3&lt;3&lt;3&spades;&clubs;&diams;&hearts;</p>
+    <p>&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;&hearts;</p>
     <ul id='path_view'></ul>
 
+    <button type='button' onclick='on_delete_list_pressed()'>&#8855; delete list &#8855;</button><br><br>
     <button type='button' onclick='on_back_pressed()'>&#8592; Back</button>
     <button type='button' onclick='on_add_pressed()'>&#8853; Add</button>
     <input type='text' id='input_field' name='input_field'>
-    <button type='button' onclick='on_save_pressed()'>save &#60;3</button>
-    <button type='button' onclick='on_delete_list_pressed()'>&#8855; delete list &#8855;</button><br>
+    <button type='button' onclick='on_save_pressed()'>save &#60;3</button><br>
 
     <ul id='list_view'></ul>
 
 
-    <script src='main.js'></script>
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register('service-worker.js');
         }
-    </script>
+        </script>
+    <script src='main.js'></script>
 </body>
 </html>
