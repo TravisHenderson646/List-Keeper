@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.9';
+const VERSION = 'v0.0.10';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
