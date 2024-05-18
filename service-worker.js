@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.10';
+const VERSION = 'v0.0.11';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -15,7 +15,7 @@ self.addEventListener('install', (event) => {
     console.log('eventlistener activate fired event', event.request)
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(urlsToCache);
+            return cache.addAll(STATIC_RESOURCES);
         }).then(() => self.skipWaiting()) // This line ensures the service worker activates immediately
     );
 });
