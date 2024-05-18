@@ -12,7 +12,7 @@ var STATIC_RESOURCES = [
 
 // On install, cache the static resources
 self.addEventListener('install', (event) => {
-    console.log('eventlistener activate fired event', event.request)
+    console.log('eventlistener install fired event', event.request)
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(STATIC_RESOURCES);
