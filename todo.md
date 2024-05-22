@@ -6,6 +6,7 @@ Next:
 
 Features:
     - import/export lists
+    - edit list name next to delete list button
 
 QoL:
     - [ ] drag and drop to resort items
