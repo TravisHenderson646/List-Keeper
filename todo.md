@@ -14,3 +14,6 @@ QoL:
     - [x] have input_field grab focus after user clicks add
     - [ ] markdown parsing for list items
     - [ ] option to show all sublists in a tree form
+
+Tidying:
+    - replace let with const where possible
