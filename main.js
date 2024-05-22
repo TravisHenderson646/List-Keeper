@@ -97,6 +97,9 @@ function on_save_pressed() {
     localStorage.setItem('save', JSON.stringify(lists, replacer));
 }
 function on_delete_list_pressed() {
+    if (path.length == 0) {
+        return;
+    }
     let parent = get_list(path.slice(0, -1));
     parent.splice(path.pop(), 1);
     refresh_list();
