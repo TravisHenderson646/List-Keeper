@@ -1,0 +1,33 @@
+body {
+    background-color: #121212; /* Dark background */
+    color: #FFFFFF; /* Light text */
+}
+
+button {
+    background-color: #BB86FC; /* Purple 200 */
+    color: #000000; /* Dark text */
+    border: none;
+    padding: 4px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px; /* Increase font size */
+    margin: 2px 2px;
+}
+
+input[type=text] {
+    background-color: #121212; /* Dark background */
+    color: #FFFFFF; /* Light text */
+    border: 2px solid #BB86FC; /* Add a border */
+    padding: 12px 0px 7px 0px;
+}
+
+ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 10; /* Remove margins */
+    color: #FFFFFF; /* Light text */
+}
+ul li {
+    font-size: 24px; /* Increase font size */
+}
