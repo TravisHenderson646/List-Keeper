@@ -1,4 +1,4 @@
-const VERSION = 'v0.0.11';
+const VERSION = 'v0.1.0';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
@@ -19,17 +19,6 @@ self.addEventListener('install', (event) => {
         }).then(() => self.skipWaiting()) // This line ensures the service worker activates immediately
     );
 });
-
-// self.addEventListener("install", (event) => {
-//     console.log('eventlistener activate fired event', event.request)
-//     event.waitUntil(
-//         caches.open(CACHE_NAME).then((cache) => {
-//             return cache.addAll(STATIC_RESOURCES);
-//         }).then(() => {
-//             console.log('Cached assets during install');
-//         })
-//     );
-// });
 
 // delete old caches on activate
 self.addEventListener("activate", (event) => {
@@ -77,67 +66,3 @@ self.addEventListener('fetch', (event) => {
         }
     })());
 });
-
-
-// self.addEventListener('fetch', (event) => {
-//     console.log('Fetch event for ', event.request.url);
-//     event.respondWith(
-//         fetch(event.request)
-//             .then((networkResponse) => {
-//                 // Update the cache with the fresh response
-//                 return caches.open(CACHE_NAME).then((cache) => {
-//                     cache.put(event.request, networkResponse.clone());
-//                     return networkResponse;
-//                 });
-//             })
-//             .catch(() => {
-//                 // When the network is unavailable, try to serve from the cache
-//                 return caches.match(event.request);
-//             })
-//     );
-// });
-
-
-// self.addEventListener('fetch', (event) => {
-//     console.log('Fetch event for ', event.request.url);
-//     event.respondWith(
-//         caches.match(event.request).then((response) => {
-//             if (response) {
-//                 console.log('Found ', event.request.url, ' in cache');
-//                 return response;
-//             }
-//             console.log('Network request for ', event.request.url);
-//             return fetch(event.request).then((networkResponse) => {
-//                 // Update the cache with the network response
-//                 return caches.open(CACHE_NAME).then((cache) => {
-//                     cache.put(event.request, networkResponse.clone());
-//                     return networkResponse;
-//                 });
-//             });
-//         }).catch((error) => {
-//             // Handle exceptions that occur from match() or fetch()
-//             console.error('Fetching failed:', error);
-//             throw error;
-//         })
-//     );
-// });
-
-
-
-// self.addEventListener("fetch", (event) => {
-//     console.log('eventlistener fetch event', event)
-//     if (event.request.mode === "navigate") {
-//         event.respondWith(caches.match("/List-Keeper/"));
-//         return;
-//     }
-//     event.respondWith(
-//         (async () => {
-//             const cache = await caches.open(CACHE_NAME);
-//             const cachedResponse = await cache.match(event.request.url);
-//             if (cachedResponse) {
-//                 return cachedResponse;
-//             }
-//             return new Response(null, { status: 404 });
-//         })(),
-//     );
-// });

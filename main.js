@@ -1,4 +1,3 @@
-
 class List {
     constructor(name){
         this.name = name;
@@ -13,18 +12,19 @@ var lists = JSON.parse(localStorage.getItem('save'), reviver);
 var path_view = document.getElementById('path_view');
 var list_view = document.getElementById('list_view');
 var input_field = document.getElementById('input_field');
+
 if ((!Array.isArray(lists)) || (Array.isArray(lists) ? !typeof lists[0] === 'object' : false)){
     lists = [];
 } else {
     refresh_list()
 }
 
-
 input_field.addEventListener('keydown', function (e){
     if (e.key === 'Enter') {
         on_add_pressed();
     }
 })
+
 
 function refresh_list() {
     path_view.innerHTML = '';
@@ -116,14 +116,14 @@ function replacer(key, value) {
         value: Array.from(value.entries()), // or with spread: value: [...value]
     };
     } else {
-    return value;
+        return value;
     }
 }
 function reviver(key, value) {
     // Use with replacer to stringify maps
     if(typeof value === 'object' && value !== null) {
         if (value.dataType === 'Map') {
-        return new Map(value.value);
+            return new Map(value.value);
         }
     }
     return value;
