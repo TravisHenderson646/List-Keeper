@@ -27,6 +27,7 @@ input_field.addEventListener('keydown', function (e){
 
 
 function refresh_list() {
+    // Construct path view
     path_view.innerHTML = '';
     for (let item of get_path_name()) {
         const element = document.createElement('li');
@@ -36,6 +37,7 @@ function refresh_list() {
         element.appendChild(node);
         path_view.appendChild(element);
     }
+    // Construct list view
     list_view.innerHTML = '';
     for (let [index, name] of get_list_items().entries()) {
         const element = document.createElement('li');
