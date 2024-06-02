@@ -7,16 +7,17 @@ class List {
     }
 }
 
-var path = [];
+const path = [];
 var lists = JSON.parse(localStorage.getItem('save'), reviver);
-var path_view = document.getElementById('path_view');
-var list_view = document.getElementById('list_view');
-var input_field = document.getElementById('input_field');
+const path_view = document.getElementById('path_view');
+const list_view = document.getElementById('list_view');
+const input_field = document.getElementById('input_field');
+let dragged_element = null;
 
 if ((!Array.isArray(lists)) || (Array.isArray(lists) ? !typeof lists[0] === 'object' : false)){
     lists = [];
 } else {
-    refresh_list()
+    refresh_list();
 }
 
 input_field.addEventListener('keydown', function (e){
@@ -27,6 +28,7 @@ input_field.addEventListener('keydown', function (e){
 
 
 function refresh_list() {
+    // Construct path view
     path_view.innerHTML = '';
     for (let item of get_path_name()) {
         const element = document.createElement('li');
@@ -36,6 +38,7 @@ function refresh_list() {
         element.appendChild(node);
         path_view.appendChild(element);
     }
+    // Construct list view
     list_view.innerHTML = '';
     for (let [index, name] of get_list_items().entries()) {
         const element = document.createElement('li');
@@ -43,10 +46,15 @@ function refresh_list() {
         element.style.margin = '0px';
         element.style.padding = '5px'
         element.addEventListener('click', function() {on_item_tapped(index)});
+        element.addEventListener('dragstart', drag_start);
+        element.addEventListener('dragover', drag_over);
+        element.addEventListener('dragend', function() {drag_end(index)});
+        element.draggable = true;
         element.appendChild(node);
         list_view.appendChild(element);
     }
 }
+
 
 function get_path_name() {
     let path_name = [];
@@ -75,6 +83,41 @@ function get_list(path) {
     return list;
 }
 
+function drag_over(e) {
+    e.preventDefault();
+    console.log(is_after(dragged_element, e.target))
+    if (is_after(dragged_element, e.target)) {
+        e.target.parentNode.insertBefore(dragged_element, e.target);
+    } else {
+        e.target.parentNode.insertBefore(dragged_element, e.target.nextSibling);
+    }
+}
+
+function drag_end(fromIndex) {
+    // Adjust 'lists' to reflect change
+    let toIndex = Array.from(dragged_element.parentNode.children).indexOf(dragged_element);
+    let movedItem = get_list(path).splice(fromIndex, 1)[0];
+    get_list(path).splice(toIndex, 0, movedItem);
+
+    dragged_element = null;
+    refresh_list();
+}
+
+function drag_start(e) {
+    e.dataTransfer.effectAllowed = 'move';
+    dragged_element = e.target;
+}
+
+function is_after(el1, el2) {
+    let cur;
+    if (el2.parentNode === el1.parentNode) {
+        for (cur = el1.previousSibling; cur; cur = cur.previousSibling) {
+            if (cur === el2) return true;
+        }
+    }
+    return false;
+}
+
 function on_item_tapped(index) {
     path.push(index);
     refresh_list();
@@ -89,7 +132,7 @@ function on_add_pressed() {
         get_list(path).push(item);
         input_field.value = '';
         refresh_list();
-        on_save_pressed()
+        on_save_pressed();
     }
     input_field.focus();
 }
