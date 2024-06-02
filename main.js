@@ -7,11 +7,12 @@ class List {
     }
 }
 
-var path = [];
+const path = [];
 var lists = JSON.parse(localStorage.getItem('save'), reviver);
-var path_view = document.getElementById('path_view');
-var list_view = document.getElementById('list_view');
-var input_field = document.getElementById('input_field');
+const path_view = document.getElementById('path_view');
+const list_view = document.getElementById('list_view');
+const input_field = document.getElementById('input_field');
+let dragged_element = null;
 
 if ((!Array.isArray(lists)) || (Array.isArray(lists) ? !typeof lists[0] === 'object' : false)){
     lists = [];
@@ -24,46 +25,6 @@ input_field.addEventListener('keydown', function (e){
         on_add_pressed();
     }
 })
-
-// Global variable to keep track of the selected element
-let selected = null;
-
-// Function to handle the drag over event
-function dragOver(e) {
-  e.preventDefault(); // Prevent the default behavior
-  if (isBefore(selected, e.target)) {
-    e.target.parentNode.insertBefore(selected, e.target);
-  } else {
-    e.target.parentNode.insertBefore(selected, e.target.nextSibling);
-  }
-}
-
-// Function to handle the drag end event
-function dragEnd(fromIndex) {
-    let toIndex = Array.from(selected.parentNode.children).indexOf(selected);
-    let movedItem = get_list(path).splice(fromIndex, 1)[0];
-    get_list(path).splice(toIndex, 0, movedItem);
-
-    selected = null;
-    refresh_list();
-}
-
-// Function to handle the drag start event
-function dragStart(e) {
-    e.dataTransfer.effectAllowed = 'move'; // Set the effect for the drag operation
-    selected = e.target; // Set the selected element
-}
-
-// Function to check if an element is before another element
-function isBefore(el1, el2) {
-    let cur;
-    if (el2.parentNode === el1.parentNode) {
-        for (cur = el1.previousSibling; cur; cur = cur.previousSibling) {
-            if (cur === el2) return true;
-        }
-    }
-    return false;
-}
 
 
 function refresh_list() {
@@ -85,14 +46,15 @@ function refresh_list() {
         element.style.margin = '0px';
         element.style.padding = '5px'
         element.addEventListener('click', function() {on_item_tapped(index)});
-        element.addEventListener('dragstart', dragStart);
-        element.addEventListener('dragover', dragOver);
-        element.addEventListener('dragend', function() {dragEnd(index)});
+        element.addEventListener('dragstart', drag_start);
+        element.addEventListener('dragover', drag_over);
+        element.addEventListener('dragend', function() {drag_end(index)});
         element.draggable = true;
         element.appendChild(node);
         list_view.appendChild(element);
     }
 }
+
 
 function get_path_name() {
     let path_name = [];
@@ -121,6 +83,41 @@ function get_list(path) {
     return list;
 }
 
+function drag_over(e) {
+    e.preventDefault();
+    console.log(is_after(dragged_element, e.target))
+    if (is_after(dragged_element, e.target)) {
+        e.target.parentNode.insertBefore(dragged_element, e.target);
+    } else {
+        e.target.parentNode.insertBefore(dragged_element, e.target.nextSibling);
+    }
+}
+
+function drag_end(fromIndex) {
+    // Adjust 'lists' to reflect change
+    let toIndex = Array.from(dragged_element.parentNode.children).indexOf(dragged_element);
+    let movedItem = get_list(path).splice(fromIndex, 1)[0];
+    get_list(path).splice(toIndex, 0, movedItem);
+
+    dragged_element = null;
+    refresh_list();
+}
+
+function drag_start(e) {
+    e.dataTransfer.effectAllowed = 'move';
+    dragged_element = e.target;
+}
+
+function is_after(el1, el2) {
+    let cur;
+    if (el2.parentNode === el1.parentNode) {
+        for (cur = el1.previousSibling; cur; cur = cur.previousSibling) {
+            if (cur === el2) return true;
+        }
+    }
+    return false;
+}
+
 function on_item_tapped(index) {
     path.push(index);
     refresh_list();
@@ -135,7 +132,7 @@ function on_add_pressed() {
         get_list(path).push(item);
         input_field.value = '';
         refresh_list();
-        on_save_pressed()
+        on_save_pressed();
     }
     input_field.focus();
 }
