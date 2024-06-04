@@ -9,11 +9,8 @@ Features:
     - edit list name next to delete list button
 
 QoL:
-    - [ ] drag and drop to resort items
-        https://codepen.io/crouchingtigerhiddenadam/pen/qKXgap
+    - [x] drag and drop to resort items
     - [x] have input_field grab focus after user clicks add
     - [ ] markdown parsing for list items
     - [ ] option to show all sublists in a tree form
 
-Tidying:
-    - replace let with const where possible
