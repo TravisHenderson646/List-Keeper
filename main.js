@@ -105,6 +105,7 @@ function drag_end(fromIndex) {
 function drag_start(e) {
     e.dataTransfer.effectAllowed = 'move';
     dragged_element = e.target;
+    e.dataTransfer.setData('text/plain', dragged_element.textContent)
 }
 
 function is_after(el1, el2) {
