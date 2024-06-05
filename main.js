@@ -13,6 +13,7 @@ const path_view = document.getElementById('path_view');
 const list_view = document.getElementById('list_view');
 const input_field = document.getElementById('input_field');
 const import_field = document.getElementById('import_field');
+import_field.style.display = 'none';
 let dragged_element = null;
 
 if ((!Array.isArray(lists)) || (Array.isArray(lists) ? !typeof lists[0] === 'object' : false)){
@@ -149,12 +150,17 @@ function on_delete_list_pressed() {
     refresh_list();
 }
 function on_import_list_pressed() {
+    if (import_field.style.display === 'none') {
+        import_field.style.display = 'inline-block';
+    } else {
+        import_field.style.display = 'none';
+    }
     let names = import_field.value.split("\n");
     import_field.value = '';
     for (let name of names) {
         let trimmed_name = name.replace(/^[\t\- ]+/, '')
         let item = new List(trimmed_name);
-        if (!get_list_items().includes(item.name) && trimmed_name){
+        if (!get_list_items().includes(item.name) && trimmed_name) {
             get_list(path).push(item);
             refresh_list();
             on_save_pressed();
