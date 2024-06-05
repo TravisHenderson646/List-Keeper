@@ -151,12 +151,6 @@ function on_delete_list_pressed() {
 }
 function on_import_list_pressed() {
     let names = import_field.value.split("\n");
-    names.push('')
-    names.push('a')
-    names.push('')
-    names.push('a')
-    names.push('')
-    console.log(names)
     import_field.value = '';
     for (let name of names) {
         let trimmed_name = name.replace(/^[\t\- ]+/, '')
