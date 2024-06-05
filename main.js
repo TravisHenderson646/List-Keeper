@@ -12,6 +12,7 @@ var lists = JSON.parse(localStorage.getItem('save'), reviver);
 const path_view = document.getElementById('path_view');
 const list_view = document.getElementById('list_view');
 const input_field = document.getElementById('input_field');
+const import_field = document.getElementById('import_field');
 let dragged_element = null;
 
 if ((!Array.isArray(lists)) || (Array.isArray(lists) ? !typeof lists[0] === 'object' : false)){
@@ -127,8 +128,9 @@ function on_back_pressed() {
     refresh_list();
 }
 function on_add_pressed() {
-    let item = new List(input_field.value);
-    if (!get_list_items().includes(item.name)){
+    let name = input_field.value.replace(/^\s+/, '')
+    let item = new List(name);
+    if (!get_list_items().includes(item.name) && name){
         get_list(path).push(item);
         input_field.value = '';
         refresh_list();
@@ -147,7 +149,26 @@ function on_delete_list_pressed() {
     parent.splice(path.pop(), 1);
     refresh_list();
 }
+function on_import_list_pressed() {
+    let names = import_field.value.split("\n");
+    names.push('')
+    names.push('a')
+    names.push('')
+    names.push('a')
+    names.push('')
+    console.log(names)
+    import_field.value = '';
+    for (let name of names) {
+        let trimmed_name = name.replace(/^[\t\- ]+/, '')
+        let item = new List(trimmed_name);
+        if (!get_list_items().includes(item.name) && trimmed_name){
+            get_list(path).push(item);
+            refresh_list();
+            on_save_pressed();
+        }
+    }
 
+}
 
 
 
