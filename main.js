@@ -85,7 +85,6 @@ function get_list(path) {
 }
 
 function drag_over(e) {
-    console.log(is_after(dragged_element, e.target))
     if (is_after(dragged_element, e.target)) {
         e.target.parentNode.insertBefore(dragged_element, e.target);
     } else {
