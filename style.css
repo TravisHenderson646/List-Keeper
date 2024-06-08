@@ -30,5 +30,5 @@ ul {
 }
 ul li {
     font-size: 24px; /* Increase font size */
-    touch-action: none; /* Prevent default touch behaviors */
+    /* touch-action: none; Prevent default touch behaviors */
 }
