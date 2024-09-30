@@ -1,13 +1,13 @@
-const VERSION = 'v0.1.1';
+const VERSION = 'v0.1.3';
 
 const CACHE_NAME = `List-Keeper-${VERSION}`;
 
 var STATIC_RESOURCES = [
-  '/List-Keeper/',
-  '/List-Keeper/index.html',
-  '/List-Keeper/main.js',
-  '/List-Keeper/icons/icon.png',
-  '/List-Keeper/manifest.json'
+    '/List-Keeper/',
+    '/List-Keeper/index.html',
+    '/List-Keeper/main.js',
+    '/List-Keeper/icons/icon.png',
+    '/List-Keeper/manifest.json'
 ];
 
 // On install, cache the static resources
