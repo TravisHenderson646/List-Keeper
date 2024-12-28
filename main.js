@@ -82,6 +82,18 @@ function get_list_items() {
     return items;
 }
 
+
+function on_export_list_pressed() {
+    let export_string = ''
+    for (let item of get_list_items()) {
+        export_string += item
+        export_string += '\n'
+    }
+    export_string = export_String.slice(0, -2)
+    navigator.clipboard.writeText(export_string);
+    alert("Copied the text: " + export_string);
+}
+
 function get_parent_list_items() {
     let items = []
     const slicedPath = path.slice(0, -1);
@@ -183,8 +195,8 @@ function on_import_list_pressed() {
             on_save_pressed();
         }
     }
-
 }
+
 
 function drag_over(e) {
     if (is_after(dragged_element, e.target)) {
