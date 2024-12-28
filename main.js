@@ -84,12 +84,16 @@ function get_list_items() {
 
 
 function on_export_list_pressed() {
+    console.log('attempting export')
     let export_string = ''
     for (let item of get_list_items()) {
         export_string += item
         export_string += '\n'
+        console.log(export_string);
     }
-    export_string = export_String.slice(0, -2)
+    export_string = export_String.slice(0, -2);
+    console.log('final export');
+    console.log(export_string);
     navigator.clipboard.writeText(export_string);
     alert("Copied the text: " + export_string);
 }
