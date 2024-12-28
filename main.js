@@ -91,7 +91,7 @@ function on_export_list_pressed() {
         export_string += '\n'
         console.log(export_string);
     }
-    export_string = export_String.slice(0, -2);
+    export_string = export_string.slice(0, -2);
     console.log('final export');
     console.log(export_string);
     navigator.clipboard.writeText(export_string);
